@@ -1,4 +1,4 @@
-name: Windows Production EXE Compiler Build
+name: Cross-Platform Production Multi-Compiler Build
 
 on:
   push:
@@ -8,27 +8,47 @@ on:
 jobs:
   build-windows:
     runs-on: windows-latest
-
     steps:
     - name: Checkout Code Repository Source
       uses: actions/checkout@v4
-
     - name: Set Up Python Runtime Environment
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
-
     - name: Install Critical Software Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install cryptography pyinstaller
-
     - name: Trigger PyInstaller Native Cross-Compilation Build
       run: |
         python -m PyInstaller --onefile --windowed --name=CachyVault app.py
-
     - name: Upload Finished Compiled EXE to GitHub Release Assets Locker
       uses: actions/upload-artifact@v4
       with:
         name: CachyVault-Windows-EXE
         path: dist/CachyVault.exe
+
+  build-linux-appimage:
+    runs-on: ubuntu-latest  # 🚀 MULTI-ENGINE HOOK: Spin up an Ubuntu cloud image machine simultaneously!
+    steps:
+    - name: Checkout Code Repository Source
+      uses: actions/checkout@v4
+    - name: Set Up Python Runtime Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install Linux Compiler Modules
+      run: |
+        python -m pip install --upgrade pip
+        pip install cryptography pyinstaller
+        # Install the AppImage system builder utility tools
+        sudo wget -O /usr/local/bin/appimagetool https://github.com
+        sudo chmod +x /usr/local/bin/appimagetool
+    - name: Bundle Standalone Linux App Pack
+      run: |
+        python -m PyInstaller --onefile --name=CachyVault app.py
+    - name: Upload Finished Universal Linux Application Binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: CachyVault-Universal-Linux-Binary
+        path: dist/CachyVault
