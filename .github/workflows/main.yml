@@ -51,25 +51,16 @@ jobs:
         path: dist/CachyVault
 
   build-android-apk:
-    runs-on: ubuntu-latest  # 🚀 MOBILE HOOK: Spin up an Android environment block!
+    runs-on: ubuntu-latest  # 🚀 MOBILE COMPILER ENGINE: Fire up a heavy mobile compiler machine
     steps:
     - name: Checkout Code Repository Source
       uses: actions/checkout@v4
     - name: Set Up Python Runtime Environment
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'  # Buildozer works best on highly stable 3.11 runtimes
-    - name: Configure Android SDK/NDK Build System Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev tk-dev libgdbm-compat-dev libreoffice-dev xclip libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
-        pip install --user --upgrade buildozer cython virtualenv
-    - name: Mock Android Configuration Packaging Setup
-      run: |
-        # Creates a quick deployment flag file indicating Android app assets format rules
-        echo "Android asset staging layout verified" > cachyvault_mobile_build.txt
-    - name: Upload Finished Signed Android Package File
-      uses: actions/upload-artifact@v4
+        python-version: '3.11'
+    - name: Build Android APK Package via Buildozer Action Hook
+      uses: ArtemGovorov/buildozer-action@v1
       with:
-        name: CachyVault-Android-APK-Package
-        path: cachyvault_mobile_build.txt
+        command: buildozer android debug
+        repository_root: .
