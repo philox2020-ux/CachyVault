@@ -1,4 +1,4 @@
-name: Cross-Platform Production Multi-Compiler Build
+name: Cross-Platform Desktop Production Multi-Compiler Build
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         name: CachyVault-Windows-EXE
         path: dist/CachyVault.exe
 
-  build-linux-appimage:
+  build-linux-binary:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Code Repository Source
@@ -49,18 +49,3 @@ jobs:
       with:
         name: CachyVault-Universal-Linux-Binary
         path: dist/CachyVault
-
-  build-android-apk:
-    runs-on: ubuntu-latest  # 🚀 MOBILE COMPILER ENGINE: Fire up a heavy mobile compiler machine
-    steps:
-    - name: Checkout Code Repository Source
-      uses: actions/checkout@v4
-    - name: Set Up Python Runtime Environment
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-    - name: Build Android APK Package via Buildozer Action Hook
-      uses: ArtemGovorov/buildozer-action@v1
-      with:
-        command: buildozer android debug
-        repository_root: .
