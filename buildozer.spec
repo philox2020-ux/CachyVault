@@ -6,13 +6,16 @@ source.dir = .
 source.include_exts = py,png,jpg,json
 version = 1.1
 
-# ⛓️ DEPENDENCY HOOKS: Force the mobile processor to download your cryptographic modules
-requirements = python3,kivy,cryptography,openssl
+# ⛓️ DEPENDENCY HOOKS: Include core mobile engines and encryption modules
+requirements = python3,kivy,cryptography
 
 orientation = portrait
 fullscreen = 1
-android.archs = armeabi-v7a, arm64-v8a
-android.allow_backup = True
+android.archs = arm64-v8a
+
+# Basic system paths required to prevent parser crashes
+icon.filename = %(source.dir)s/icon.png
+p4a.branch = master
 
 [buildozer]
 log_level = 2
