@@ -21,7 +21,7 @@ jobs:
         pip install cryptography pyinstaller
     - name: Trigger PyInstaller Native Cross-Compilation Build
       run: |
-        python -m PyInstaller --onefile --windowed --name=CachyVault app.py
+        python -m PyInstaller --onefile --collect-all tkinterdnd2 --name=CachyVault app.py
     - name: Upload Finished Compiled EXE to GitHub Release Assets Locker
       uses: actions/upload-artifact@v4
       with:
